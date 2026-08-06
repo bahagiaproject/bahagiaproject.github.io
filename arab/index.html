@@ -744,7 +744,7 @@ const store={
    Selama masih kosong, data hanya tersimpan di peramban pengunjung
    dan tidak dikirim ke mana pun.
    ============================================================ */
-const ENDPOINT='';
+const ENDPOINT='https://script.google.com/macros/s/AKfycbxrmV-x2wxbefYxYpGUPVvdE2MJUnkoLPSXVX6FltEv1w99Kio1hOzHk3S8Q79KPADCTw/exec';
 const PESAN_BAGIKAN='Aku nemu aplikasi belajar Bahasa Arab yang enak dipakai \u2014 gratis, penjelasannya bahasa sehari-hari, contohnya banyak. Cobain:';
 const PRIVASI='';            /* opsional: tautan kebijakan privasi */
 const NAMA_PEMILIK='Bahagia Project';
@@ -3065,6 +3065,30 @@ document.addEventListener('DOMContentLoaded',()=>{
     const src=u.get('src')||u.get('utm_source')||'';
     if(src&&!state.src) state.src=String(src).slice(0,60);
     if(u.get('sb')) state.viral=true;
+
+    /* data dari formulir landing page (?nama=&email=&wa=) — dicatat sekali,
+       tidak menimpa jika sudah pernah tersimpan sebelumnya, dan tidak
+       memunculkan lagi formulir opt-in internal karena datanya sudah ada */
+    if(!state.kontak){
+      const namaUrl=(u.get('nama')||'').trim().slice(0,80);
+      const emailUrl=(u.get('email')||'').trim().slice(0,120);
+      const waUrl=(u.get('wa')||'').trim().slice(0,20);
+      const emailOk=/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(emailUrl);
+      if(namaUrl&&emailOk&&waUrl){
+        state.form.nama=namaUrl; state.form.email=emailUrl; state.form.wa=waUrl; state.form.setuju=true;
+        state.kontak={
+          id:'k'+Date.now().toString(36)+Math.random().toString(36).slice(2,7),
+          nama:namaUrl, email:emailUrl, wa:rapikanWA(waUrl),
+          kemajuan:'baru masuk dari landing page',
+          sumber:state.src||'landing', sebaran:'tautan asli',
+          kunjungan:'1', waktu:new Date().toISOString(),
+          halaman:(location&&location.href)||'', terkirim:false
+        };
+        state.optin='kirim';
+        simpan();
+        kirimKeServer(state.kontak).then(ok=>{ if(ok){ state.kontak.terkirim=true; simpan(); } });
+      }
+    }
   }catch(e){}
   const hariIni=new Date().toISOString().slice(0,10);
   if(state.hari!==hariIni){ state.kunjungan=(state.kunjungan||0)+1; state.hari=hariIni; }
