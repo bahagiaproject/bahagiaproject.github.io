@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nahwu &amp; Sharaf — Belajar dari Nol</title>
+<title>Bahagia Belajar Bahasa Arab</title>
+<link rel="icon" href="https://ik.imagekit.io/okibakti/Untitled%20design%20(10).png?updatedAt=1785890792996">
+<link rel="apple-touch-icon" href="https://ik.imagekit.io/okibakti/Untitled%20design%20(10).png?updatedAt=1785890792996">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Karla:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -38,6 +40,7 @@
   --hov:#FFFCF4;
   --arf:1;
   --shadow:0 6px 22px rgba(23,35,61,.13);
+  --paper-0:rgba(242,235,218,0);
 }
 html[data-theme="dark"]{
   --paper:#151A21;
@@ -59,6 +62,7 @@ html[data-theme="dark"]{
   --tint-2:rgba(255,255,255,.035);
   --hov:#232B36;
   --shadow:0 6px 22px rgba(0,0,0,.45);
+  --paper-0:rgba(21,26,33,0);
 }
 html{color-scheme:light}
 html[data-theme="dark"]{color-scheme:dark}
@@ -86,7 +90,15 @@ button{font-family:inherit;cursor:pointer}
   display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
   padding:26px 0 16px;border-bottom:2px solid var(--ink);flex-wrap:wrap;
 }
-.brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.brand .logo{
+  height:52px;width:auto;max-width:180px;object-fit:contain;flex:none;display:block;
+  transform:translateY(-64px)
+}
+@media(max-width:620px){
+  .brand .logo{height:42px}
+  .brand .ar-title{display:none}
+}
 .brand h1{
   font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.4vw,38px);
   margin:0;letter-spacing:-.02em;line-height:1;
@@ -100,12 +112,39 @@ button{font-family:inherit;cursor:pointer}
 .bar{width:110px;height:6px;background:var(--paper-3);border-radius:99px;overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:var(--teal);transition:width .45s ease}
 
+.tabwrap{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:var(--line)}
 nav.tabs{
-  display:flex;gap:2px;flex-wrap:nowrap;margin:0;padding:0;border-bottom:var(--line);
-  position:sticky;top:0;z-index:30;background:var(--paper);
-  overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none
+  display:flex;gap:2px;flex-wrap:nowrap;margin:0;padding:0;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  scroll-behavior:smooth
 }
 nav.tabs::-webkit-scrollbar{display:none}
+
+/* penanda bahwa menu masih bisa digeser */
+.tabwrap::before,.tabwrap::after{
+  content:'';position:absolute;top:0;bottom:0;width:52px;pointer-events:none;
+  opacity:0;transition:opacity .22s;z-index:2
+}
+.tabwrap::before{left:0;background:linear-gradient(90deg,var(--paper) 30%,var(--paper-0))}
+.tabwrap::after{right:0;background:linear-gradient(270deg,var(--paper) 30%,var(--paper-0))}
+.geser{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:3;pointer-events:none;
+  width:24px;height:24px;border-radius:50%;background:var(--rubric);color:var(--paper);
+  display:grid;place-items:center;font-size:15px;line-height:1;font-family:var(--sans);
+  opacity:0;transition:opacity .22s
+}
+.geser.kiri{left:4px} .geser.kanan{right:4px}
+.tabwrap.ada-kiri::before,.tabwrap.ada-kiri .geser.kiri{opacity:1}
+.tabwrap.ada-kanan::after,.tabwrap.ada-kanan .geser.kanan{opacity:1}
+.tabwrap.ada-kanan .geser.kanan{animation:dorong 1.5s ease-in-out 3}
+@keyframes dorong{
+  0%,100%{transform:translate(0,-50%)}
+  50%{transform:translate(-5px,-50%)}
+}
+@media (prefers-reduced-motion:reduce){
+  .tabwrap.ada-kanan .geser.kanan{animation:none}
+  nav.tabs{scroll-behavior:auto}
+}
 nav.tabs button{
   background:none;border:0;border-bottom:3px solid transparent;
   padding:13px 15px;font-size:14.5px;font-weight:600;color:var(--ink-soft);
@@ -198,6 +237,7 @@ nav.tabs button[aria-current="true"]{color:var(--ink);border-bottom-color:var(--
 /* ---------- lesson body ---------- */
 article{max-width:70ch}
 .lesson-head{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:22px}
+#lessonArt{scroll-margin-top:74px}
 .lesson-head .kicker{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--rubric);margin-bottom:8px}
 .lesson-head h2{font-family:var(--serif);font-size:clamp(24px,4vw,32px);font-weight:600;margin:0;letter-spacing:-.015em;line-height:1.2}
 .lesson-head .ar{font-family:var(--ar);font-size:calc(26px * var(--arf));color:var(--gold);margin-top:4px}
@@ -464,6 +504,74 @@ button.card:hover{transform:translateY(-2px);border-top-color:var(--gold)}
 .tawaran p{margin:0;font-size:14px;color:var(--ink-soft)}
 .tawaran b{color:var(--ink)}
 
+/* ---------- sorotan hasil pencarian ---------- */
+.disorot{
+  border-color:var(--rubric)!important;
+  box-shadow:0 0 0 2px rgba(163,58,42,.28);
+  animation:kedip 1.6s ease 1
+}
+@keyframes kedip{
+  0%{box-shadow:0 0 0 2px rgba(163,58,42,.28)}
+  35%{box-shadow:0 0 0 7px rgba(163,58,42,.10)}
+  100%{box-shadow:0 0 0 2px rgba(163,58,42,.28)}
+}
+@media (prefers-reduced-motion:reduce){.disorot{animation:none}}
+
+/* ---------- kamus istilah ---------- */
+.istilah{display:grid;grid-template-columns:repeat(auto-fit,minmax(275px,1fr));gap:14px;margin-top:18px}
+.istilah .huruf{
+  grid-column:1/-1;font-family:var(--serif);font-size:23px;font-weight:600;color:var(--rubric);
+  border-bottom:2px solid var(--paper-3);padding-bottom:5px;margin:12px 0 0;letter-spacing:-.01em
+}
+.istilah .huruf:first-child{margin-top:0}
+.ist{background:var(--paper-2);border:var(--line);border-left:3px solid var(--teal);border-radius:var(--r);padding:16px 18px 14px}
+.ist h5{font-family:var(--serif);font-size:18.5px;font-weight:600;margin:0 0 1px;letter-spacing:-.01em}
+.ist .arj{font-family:var(--ar);font-size:calc(23px * var(--arf));direction:rtl;color:var(--gold);line-height:1.7;margin-bottom:9px}
+.ist .kk{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:5px 0;border-bottom:var(--line)}
+.ist .kk .aa{font-family:var(--ar);font-size:calc(20px * var(--arf));direction:rtl;flex:none}
+.ist .kk .mm{font-size:13px;color:var(--ink-soft);text-align:right}
+.ist .ket{margin:10px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+.ist .ket b{color:var(--ink)}
+.ist .harfiah{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:2px}
+
+/* ---------- tabel rujukan tashrif ---------- */
+.rujuk{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}
+@media(max-width:760px){.rujuk{grid-template-columns:1fr}}
+.rujuk .kt{background:var(--paper-2);border:var(--line);border-left:3px solid var(--gold);border-radius:var(--r);padding:16px 18px 12px}
+.rujuk .kp{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;border-bottom:2px solid var(--paper-3);padding-bottom:9px;margin-bottom:6px}
+.rujuk .kp .no{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--rubric)}
+.rujuk .kp .wz{font-family:var(--ar);font-size:calc(21px * var(--arf));direction:rtl}
+.rujuk .kp .ar-ti{font-size:12.5px;color:var(--ink-soft);width:100%}
+.rujuk .br{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:5px 0;border-bottom:var(--line)}
+.rujuk .br:last-child{border-bottom:0}
+.rujuk .br .nm{font-size:12.5px;color:var(--ink-soft);flex:none}
+.rujuk .br .hs{font-family:var(--ar);font-size:calc(21px * var(--arf));direction:rtl;text-align:right;line-height:1.7}
+.rujuk .br .hs.kosong{font-family:var(--sans);font-size:12.5px;color:var(--ink-soft)}
+
+/* ---------- beranda ---------- */
+.kutipan{
+  background:var(--paper-2);border:var(--line);border-right:3px solid var(--gold);
+  border-radius:var(--r);padding:26px 24px 20px;text-align:center
+}
+.kutipan .ar{
+  direction:rtl;font-family:var(--ar);font-size:calc(clamp(28px,5.2vw,38px) * var(--arf));
+  line-height:1.9;margin-bottom:10px
+}
+.kutipan .id{font-family:var(--serif);font-size:18px;font-style:italic;margin-bottom:8px}
+.kutipan .sum{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+.motivasi{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--paper-3);
+  border:1px solid var(--paper-3);border-radius:var(--r);overflow:hidden;margin:6px 0 0}
+@media(max-width:820px){.motivasi{grid-template-columns:1fr}}
+.motivasi .sel{background:var(--paper-2);padding:19px 20px 17px}
+.motivasi h5{font-family:var(--serif);font-size:17px;font-weight:600;margin:0 0 5px}
+.motivasi p{margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+.capaian{
+  display:flex;align-items:center;gap:13px;flex-wrap:wrap;margin:0 0 8px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)
+}
+.capaian .garis{flex:1;min-width:90px;height:5px;background:var(--paper-3);border-radius:99px;overflow:hidden}
+.capaian .garis i{display:block;height:100%;background:var(--teal)}
+
 /* ---------- ajakan berbagi & jembatan ---------- */
 a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
 .bagikan{
@@ -479,7 +587,11 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 .brandlink{
   display:inline-flex;align-items:center;gap:11px;text-decoration:none;cursor:pointer;
   background:var(--paper-2);border:1.5px solid var(--paper-3);border-radius:99px;
-  padding:6px 8px 6px 15px;transition:border-color .18s,background .18s,transform .18s,box-shadow .18s;
+  padding:6px 8px 6px 7px;transition:border-color .18s,background .18s,transform .18s,box-shadow .18s;
+}
+.brandlink .bl-logo{
+  width:32px;height:32px;border-radius:50%;object-fit:cover;flex:none;
+  background:var(--paper-3);border:1px solid var(--paper-3)
 }
 .brandlink:hover,.brandlink:focus-visible{
   border-color:var(--rubric);background:var(--hov);transform:translateY(-1px);
@@ -537,9 +649,10 @@ footer{margin-top:56px;padding-top:18px;border-top:var(--line);font-size:12.5px;
   </div>
   <header class="masthead">
     <div class="brand">
+      <img class="logo" src="https://ik.imagekit.io/okibakti/Untitled%20design%20(10).png?updatedAt=1785890792996" alt="Logo Bahagia Project">
       <div>
-        <h1>Nahwu &amp; Sharaf</h1>
-        <small>Belajar dari nol · penjelasan sederhana · banyak contoh</small>
+        <h1>Bahagia Belajar Bahasa Arab</h1>
+        <small>Nahwu &amp; sharaf dari nol · penjelasan sederhana · banyak contoh</small>
       </div>
       <span class="ar-title">النَّحْوُ وَالصَّرْفُ</span>
     </div>
@@ -560,7 +673,11 @@ footer{margin-top:56px;padding-top:18px;border-top:var(--line);font-size:12.5px;
     <button class="iconbtn" id="theme" aria-label="Ganti mode gelap atau terang" title="Mode gelap / terang">☾</button>
   </div>
 
-  <nav class="tabs" id="tabs"></nav>
+  <div class="tabwrap" id="tabwrap">
+    <nav class="tabs" id="tabs" aria-label="Menu utama"></nav>
+    <span class="geser kiri" aria-hidden="true">&lsaquo;</span>
+    <span class="geser kanan" aria-hidden="true">&rsaquo;</span>
+  </div>
   <main id="view"></main>
 
   <footer>
@@ -968,7 +1085,7 @@ const SHARAF=[
 
 {id:'s3',ar:'أَبْوَابُ الثُّلَاثِيِّ الْمُجَرَّد',title:'Enam Bab Tsulatsi Mujarrad',
  body:[
- {t:'p',x:'Fi\u2019il tiga huruf tanpa tambahan disebut **tsulatsi mujarrad**. Bentuk madhi-nya hampir sama semua, yang membedakan adalah **harakat huruf tengah pada mudhari\u2019**. Seluruhnya hanya ada enam kemungkinan.'},
+ {t:'p',x:'Fi\u2019il tiga huruf tanpa tambahan disebut **tsulatsi mujarrad** — {ثُلَاثِيّ} berarti *berjumlah tiga*, {مُجَرَّد} berarti *ditelanjangi* alias tanpa huruf tambahan. Bentuk madhi-nya hampir sama semua, yang membedakan adalah **harakat huruf tengah pada mudhari\u2019**. Seluruhnya hanya ada enam kemungkinan.'},
  {t:'scroll-table',head:['Bab','Wazan','Contoh','Arti','Ciri makna'],rows:[
    ['1','فَعَلَ – يَفْعُلُ','نَصَرَ – يَنْصُرُ','menolong','umum'],
    ['2','فَعَلَ – يَفْعِلُ','ضَرَبَ – يَضْرِبُ','memukul','umum'],
@@ -1091,7 +1208,7 @@ const SHARAF=[
 
 {id:'s9',ar:'الثُّلَاثِيُّ الْمَزِيد',title:'Tsulatsi Mazid: fi\u2019il yang diberi tambahan',
  body:[
- {t:'p',x:'Kalau akar tiga huruf diberi huruf tambahan, **maknanya bergeser** dengan pola yang bisa diprediksi. Ini bagian paling berguna dari sharaf.'},
+ {t:'p',x:'Kalau akar tiga huruf diberi huruf tambahan, ia disebut **tsulatsi mazid** — {مَزِيْد} artinya *yang ditambahi*. Dengan tambahan itu **maknanya bergeser** dengan pola yang bisa diprediksi. Ini bagian paling berguna dari sharaf.'},
  {t:'scroll-table',head:['Wazan','Mudhari\u2019','Makna umum','Contoh'],rows:[
    ['أَفْعَلَ','يُفْعِلُ','membuat jadi / transitif','أَكْرَمَ = memuliakan'],
    ['فَعَّلَ','يُفَعِّلُ','menguatkan / berulang','قَطَّعَ = memotong-motong'],
@@ -1739,6 +1856,211 @@ const QDRILL=[
 ];
 
 /* ============================================================
+   DATA — TABEL RUJUKAN TASHRIF
+   ============================================================ */
+const BENTUK9=['Madhi','Mudhari\u2019','Mashdar','Isim fa\u2019il','Isim maf\u2019ul','Amr','Nahi','Zaman & makan','Isim alat'];
+const BENTUK8=['Madhi','Mudhari\u2019','Mashdar','Isim fa\u2019il','Isim maf\u2019ul','Amr','Nahi','Zaman & makan'];
+
+/* templat memakai ف ع ل; baris nahi ditulis tanpa "لا" karena
+   huruf lam-nya akan ikut tergantikan saat akar diterapkan */
+const RUJUK_MUJARRAD=[
+ {no:'Bab 1',wazan:'فَعَلَ - يَفْعُلُ',akar:'ن ص ر',arti:'menolong',
+  tpl:['فَعَلَ','يَفْعُلُ','فَعْلًا','فَاعِلٌ','مَفْعُوْلٌ','اُفْعُلْ','تَفْعُلْ','مَفْعَلٌ','مِفْعَلٌ'],
+  con:['نَصَرَ','يَنْصُرُ','نَصْرًا','نَاصِرٌ','مَنْصُوْرٌ','اُنْصُرْ','لَا تَنْصُرْ','مَنْصَرٌ','مِنْصَرٌ']},
+ {no:'Bab 2',wazan:'فَعَلَ - يَفْعِلُ',akar:'ض ر ب',arti:'memukul',
+  tpl:['فَعَلَ','يَفْعِلُ','فَعْلًا','فَاعِلٌ','مَفْعُوْلٌ','اِفْعِلْ','تَفْعِلْ','مَفْعِلٌ','مِفْعَلٌ'],
+  con:['ضَرَبَ','يَضْرِبُ','ضَرْبًا','ضَارِبٌ','مَضْرُوْبٌ','اِضْرِبْ','لَا تَضْرِبْ','مَضْرِبٌ','مِضْرَبٌ']},
+ {no:'Bab 3',wazan:'فَعَلَ - يَفْعَلُ',akar:'ف ت ح',arti:'membuka',
+  tpl:['فَعَلَ','يَفْعَلُ','فَعْلًا','فَاعِلٌ','مَفْعُوْلٌ','اِفْعَلْ','تَفْعَلْ','مَفْعَلٌ','مِفْعَالٌ'],
+  con:['فَتَحَ','يَفْتَحُ','فَتْحًا','فَاتِحٌ','مَفْتُوْحٌ','اِفْتَحْ','لَا تَفْتَحْ','مَفْتَحٌ','مِفْتَاحٌ']},
+ {no:'Bab 4',wazan:'فَعِلَ - يَفْعَلُ',akar:'ع ل م',arti:'mengetahui',
+  tpl:['فَعِلَ','يَفْعَلُ','فِعْلًا','فَاعِلٌ','مَفْعُوْلٌ','اِفْعَلْ','تَفْعَلْ','مَفْعَلٌ','—'],
+  con:['عَلِمَ','يَعْلَمُ','عِلْمًا','عَالِمٌ','مَعْلُوْمٌ','اِعْلَمْ','لَا تَعْلَمْ','مَعْلَمٌ','—']},
+ {no:'Bab 5',wazan:'فَعُلَ - يَفْعُلُ',akar:'ح س ن',arti:'menjadi baik',
+  tpl:['فَعُلَ','يَفْعُلُ','فُعْلًا','فَعَلٌ','—','اُفْعُلْ','تَفْعُلْ','مَفْعَلٌ','—'],
+  con:['حَسُنَ','يَحْسُنُ','حُسْنًا','حَسَنٌ','—','اُحْسُنْ','لَا تَحْسُنْ','مَحْسَنٌ','—']},
+ {no:'Bab 6',wazan:'فَعِلَ - يَفْعِلُ',akar:'ح س ب',arti:'mengira',
+  tpl:['فَعِلَ','يَفْعِلُ','فِعْلًا','فَاعِلٌ','مَفْعُوْلٌ','اِفْعِلْ','تَفْعِلْ','مَفْعِلٌ','—'],
+  con:['حَسِبَ','يَحْسِبُ','حِسْبَانًا','حَاسِبٌ','مَحْسُوْبٌ','اِحْسِبْ','لَا تَحْسِبْ','مَحْسِبٌ','—']}
+];
+
+const RUJUK_MAZID=[
+ {no:'Ruba\u2019i',wazan:'أَفْعَلَ',akar:'ك ر م',arti:'memuliakan',
+  tpl:['أَفْعَلَ','يُفْعِلُ','إِفْعَالًا','مُفْعِلٌ','مُفْعَلٌ','أَفْعِلْ','تُفْعِلْ','مُفْعَلٌ'],
+  con:['أَكْرَمَ','يُكْرِمُ','إِكْرَامًا','مُكْرِمٌ','مُكْرَمٌ','أَكْرِمْ','لَا تُكْرِمْ','مُكْرَمٌ']},
+ {no:'Ruba\u2019i',wazan:'فَعَّلَ',akar:'ع ل م',arti:'mengajarkan',
+  tpl:['فَعَّلَ','يُفَعِّلُ','تَفْعِيْلًا','مُفَعِّلٌ','مُفَعَّلٌ','فَعِّلْ','تُفَعِّلْ','مُفَعَّلٌ'],
+  con:['عَلَّمَ','يُعَلِّمُ','تَعْلِيْمًا','مُعَلِّمٌ','مُعَلَّمٌ','عَلِّمْ','لَا تُعَلِّمْ','مُعَلَّمٌ']},
+ {no:'Ruba\u2019i',wazan:'فَاعَلَ',akar:'ج ه د',arti:'bersungguh bersama',
+  tpl:['فَاعَلَ','يُفَاعِلُ','مُفَاعَلَةً','مُفَاعِلٌ','مُفَاعَلٌ','فَاعِلْ','تُفَاعِلْ','مُفَاعَلٌ'],
+  con:['جَاهَدَ','يُجَاهِدُ','مُجَاهَدَةً','مُجَاهِدٌ','مُجَاهَدٌ','جَاهِدْ','لَا تُجَاهِدْ','مُجَاهَدٌ']},
+ {no:'Khumasi',wazan:'تَفَعَّلَ',akar:'ع ل م',arti:'belajar',
+  tpl:['تَفَعَّلَ','يَتَفَعَّلُ','تَفَعُّلًا','مُتَفَعِّلٌ','مُتَفَعَّلٌ','تَفَعَّلْ','تَتَفَعَّلْ','مُتَفَعَّلٌ'],
+  con:['تَعَلَّمَ','يَتَعَلَّمُ','تَعَلُّمًا','مُتَعَلِّمٌ','مُتَعَلَّمٌ','تَعَلَّمْ','لَا تَتَعَلَّمْ','مُتَعَلَّمٌ']},
+ {no:'Khumasi',wazan:'تَفَاعَلَ',akar:'ع و ن',arti:'tolong-menolong',
+  tpl:['تَفَاعَلَ','يَتَفَاعَلُ','تَفَاعُلًا','مُتَفَاعِلٌ','مُتَفَاعَلٌ','تَفَاعَلْ','تَتَفَاعَلْ','مُتَفَاعَلٌ'],
+  con:['تَعَاوَنَ','يَتَعَاوَنُ','تَعَاوُنًا','مُتَعَاوِنٌ','مُتَعَاوَنٌ','تَعَاوَنْ','لَا تَتَعَاوَنْ','مُتَعَاوَنٌ']},
+ {no:'Khumasi',wazan:'اِنْفَعَلَ',akar:'ك س ر',arti:'menjadi pecah',
+  tpl:['اِنْفَعَلَ','يَنْفَعِلُ','اِنْفِعَالًا','مُنْفَعِلٌ','مُنْفَعَلٌ','اِنْفَعِلْ','تَنْفَعِلْ','مُنْفَعَلٌ'],
+  con:['اِنْكَسَرَ','يَنْكَسِرُ','اِنْكِسَارًا','مُنْكَسِرٌ','مُنْكَسَرٌ','اِنْكَسِرْ','لَا تَنْكَسِرْ','مُنْكَسَرٌ']},
+ {no:'Khumasi',wazan:'اِفْتَعَلَ',akar:'ج ه د',arti:'bersungguh-sungguh',
+  tpl:['اِفْتَعَلَ','يَفْتَعِلُ','اِفْتِعَالًا','مُفْتَعِلٌ','مُفْتَعَلٌ','اِفْتَعِلْ','تَفْتَعِلْ','مُفْتَعَلٌ'],
+  con:['اِجْتَهَدَ','يَجْتَهِدُ','اِجْتِهَادًا','مُجْتَهِدٌ','مُجْتَهَدٌ','اِجْتَهِدْ','لَا تَجْتَهِدْ','مُجْتَهَدٌ']},
+ {no:'Khumasi',wazan:'اِفْعَلَّ',akar:'ح م ر',arti:'menjadi merah',
+  tpl:['اِفْعَلَّ','يَفْعَلُّ','اِفْعِلَالًا','مُفْعَلٌّ','—','اِفْعَلَّ','تَفْعَلَّ','—'],
+  con:['اِحْمَرَّ','يَحْمَرُّ','اِحْمِرَارًا','مُحْمَرٌّ','—','اِحْمَرَّ','لَا تَحْمَرَّ','—']},
+ {no:'Sudasi',wazan:'اِسْتَفْعَلَ',akar:'غ ف ر',arti:'memohon ampun',
+  tpl:['اِسْتَفْعَلَ','يَسْتَفْعِلُ','اِسْتِفْعَالًا','مُسْتَفْعِلٌ','مُسْتَفْعَلٌ','اِسْتَفْعِلْ','تَسْتَفْعِلْ','مُسْتَفْعَلٌ'],
+  con:['اِسْتَغْفَرَ','يَسْتَغْفِرُ','اِسْتِغْفَارًا','مُسْتَغْفِرٌ','مُسْتَغْفَرٌ','اِسْتَغْفِرْ','لَا تَسْتَغْفِرْ','مُسْتَغْفَرٌ']}
+];
+
+/* ============================================================
+   DATA — KAMUS ISTILAH
+   ============================================================ */
+const GRUP=[['all','Semua'],['dasar','Dasar'],['irab','Keadaan i\u2019rab'],['nahwu','Nahwu'],['sharaf','Sharaf']];
+
+const ISTILAH=[
+/* ---- dasar ---- */
+{t:'Nahwu',ar:'نَحْو',g:'dasar',k:[['نَحْو','arah, cara, jalan']],
+ ket:'Ilmu tentang cara menyusun kata jadi kalimat dan menentukan harakat akhirnya.'},
+{t:'Sharaf',ar:'صَرْف',g:'dasar',k:[['صَرْف','memalingkan, mengubah']],
+ ket:'Ilmu tentang perubahan bentuk kata dari satu akar menjadi banyak kata baru.'},
+{t:'Kalimah',ar:'كَلِمَة',g:'dasar',k:[['كَلِمَة','kata']],
+ ket:'Dalam bahasa Arab berarti **satu kata**, bukan kalimat. Sering tertukar di terjemahan kitab.'},
+{t:'Jumlah',ar:'جُمْلَة',g:'dasar',k:[['جُمْلَة','kumpulan, himpunan']],
+ ket:'Kalimat, yaitu kumpulan kata yang sudah tersusun.'},
+{t:'Kalam',ar:'كَلَام',g:'dasar',k:[['كَلَام','ucapan, perkataan']],
+ ket:'Kalimat yang sudah bermakna utuh dan bisa dipahami pendengarnya.'},
+{t:'Isim',ar:'اِسْم',g:'dasar',k:[['اِسْم','nama']],
+ ket:'Kata benda atau kata sifat \u2014 kata yang tidak terikat waktu.'},
+{t:'Fi\u2019il',ar:'فِعْل',g:'dasar',k:[['فِعْل','perbuatan']],
+ ket:'Kata kerja, yaitu kata yang mengandung makna sekaligus keterangan waktu.'},
+{t:'Harf',ar:'حَرْف',g:'dasar',k:[['حَرْف','tepi, sisi, huruf']],
+ ket:'Kata tugas yang tidak bermakna utuh kalau berdiri sendiri, seperti {مِنْ} dan {فِي}.'},
+{t:'I\u2019rab',ar:'إِعْرَاب',g:'dasar',k:[['إِعْرَاب','menjelaskan, mengungkapkan']],
+ ket:'Perubahan harakat huruf terakhir sebuah kata mengikuti jabatannya dalam kalimat.'},
+{t:'Mu\u2019rab',ar:'مُعْرَب',g:'dasar',k:[['مُعْرَب','yang di-i\u2019rab']],
+ ket:'Kata yang harakat akhirnya berubah-ubah mengikuti jabatan.'},
+{t:'Mabni',ar:'مَبْنِيّ',g:'dasar',k:[['مَبْنِيّ','yang dibangun, dipatok']],
+ ket:'Kata yang harakat akhirnya tetap, tidak ikut berubah. Contoh: {هُوَ}، {أَيْنَ}.'},
+{t:'Mufrad',ar:'مُفْرَد',g:'dasar',k:[['مُفْرَد','yang disendirikan']],ket:'Bentuk tunggal, menunjuk satu.'},
+{t:'Mutsanna',ar:'مُثَنَّى',g:'dasar',k:[['مُثَنَّى','yang diduakan']],ket:'Bentuk untuk dua, ditandai {انِ} atau {يْنِ}.'},
+{t:'Jamak',ar:'جَمْع',g:'dasar',k:[['جَمْع','pengumpulan']],ket:'Bentuk untuk tiga atau lebih.'},
+{t:'Ma\u2019rifah',ar:'مَعْرِفَة',g:'dasar',k:[['مَعْرِفَة','yang dikenal']],ket:'Kata yang menunjuk sesuatu yang tertentu, biasanya berawalan {الْ}.'},
+{t:'Nakirah',ar:'نَكِرَة',g:'dasar',k:[['نَكِرَة','yang tidak dikenal']],ket:'Kata yang menunjuk sesuatu yang umum, biasanya bertanwin.'},
+{t:'Dhamir',ar:'ضَمِيْر',g:'dasar',k:[['ضَمِيْر','yang tersembunyi, batin']],ket:'Kata ganti seperti {هُوَ}، {أَنْتَ}، {أَنَا}.'},
+{t:'Dhamir mustatir',ar:'ضَمِيْر مُسْتَتِر',g:'dasar',k:[['ضَمِيْر','kata ganti'],['مُسْتَتِر','yang bersembunyi']],
+ ket:'Pelaku yang tidak ditulis karena sudah tercakup di dalam fi\u2019ilnya.'},
+{t:'Harakat',ar:'حَرَكَة',g:'dasar',k:[['حَرَكَة','gerakan']],ket:'Tanda baca di atas atau bawah huruf: fathah, kasrah, dhammah.'},
+{t:'Sukun',ar:'سُكُوْن',g:'dasar',k:[['سُكُوْن','diam, tenang']],ket:'Tanda bahwa huruf dibaca mati, tanpa bunyi vokal.'},
+{t:'Tanwin',ar:'تَنْوِيْن',g:'dasar',k:[['تَنْوِيْن','pemberian bunyi nun']],ket:'Bunyi -n di ujung isim, ditulis dobel harakat: ٌ ً ٍ.'},
+
+/* ---- keadaan i'rab ---- */
+{t:'Rafa\u2019',ar:'رَفْع',g:'irab',k:[['رَفْع','mengangkat, meninggikan']],ket:'Keadaan i\u2019rab yang tanda umumnya dhammah.'},
+{t:'Marfu\u2019',ar:'مَرْفُوْع',g:'irab',k:[['مَرْفُوْع','yang diangkat']],ket:'Sebutan untuk kata yang sedang dalam keadaan rafa\u2019.'},
+{t:'Nashab',ar:'نَصْب',g:'irab',k:[['نَصْب','menegakkan, menancapkan']],ket:'Keadaan i\u2019rab yang tanda umumnya fathah.'},
+{t:'Manshub',ar:'مَنْصُوْب',g:'irab',k:[['مَنْصُوْب','yang ditegakkan']],ket:'Sebutan untuk kata yang sedang dalam keadaan nashab.'},
+{t:'Jar',ar:'جَرّ',g:'irab',k:[['جَرّ','menarik, menyeret']],ket:'Keadaan i\u2019rab yang tanda umumnya kasrah. Disebut juga khafadh.'},
+{t:'Majrur',ar:'مَجْرُوْر',g:'irab',k:[['مَجْرُوْر','yang ditarik']],ket:'Sebutan untuk kata yang sedang dalam keadaan jar.'},
+{t:'Khafadh',ar:'خَفْض',g:'irab',k:[['خَفْض','merendahkan']],ket:'Nama lain dari jar, dipakai dalam kitab Ajurrumiyyah.'},
+{t:'Jazm',ar:'جَزْم',g:'irab',k:[['جَزْم','memotong, memutus']],ket:'Keadaan i\u2019rab khusus fi\u2019il mudhari\u2019, tandanya sukun.'},
+{t:'Majzum',ar:'مَجْزُوْم',g:'irab',k:[['مَجْزُوْم','yang dipotong']],ket:'Sebutan untuk fi\u2019il yang sedang dalam keadaan jazm.'},
+{t:'Alamat i\u2019rab',ar:'عَلَامَات الْإِعْرَاب',g:'irab',k:[['عَلَامَات','tanda-tanda'],['الْإِعْرَاب','i\u2019rab']],
+ ket:'Penanda keadaan i\u2019rab, bisa berupa harakat maupun huruf seperti {وْنَ} dan {انِ}.'},
+
+/* ---- nahwu ---- */
+{t:'Jumlah ismiyyah',ar:'جُمْلَة اِسْمِيَّة',g:'nahwu',k:[['جُمْلَة','kalimat'],['اِسْمِيَّة','bersifat isim']],
+ ket:'Kalimat yang diawali isim, susunannya mubtada\u2019 + khabar.'},
+{t:'Jumlah fi\u2019liyyah',ar:'جُمْلَة فِعْلِيَّة',g:'nahwu',k:[['جُمْلَة','kalimat'],['فِعْلِيَّة','bersifat fi\u2019il']],
+ ket:'Kalimat yang diawali fi\u2019il, susunannya fi\u2019il + fa\u2019il + maf\u2019ul.'},
+{t:'Mubtada\u2019',ar:'مُبْتَدَأ',g:'nahwu',k:[['مُبْتَدَأ','yang dimulai']],ket:'Kata yang dibicarakan, dibaca marfu\u2019.'},
+{t:'Khabar',ar:'خَبَر',g:'nahwu',k:[['خَبَر','berita, kabar']],ket:'Keterangan tentang mubtada\u2019, dibaca marfu\u2019.'},
+{t:'Fa\u2019il',ar:'فَاعِل',g:'nahwu',k:[['فَاعِل','yang melakukan']],ket:'Pelaku perbuatan, selalu marfu\u2019.'},
+{t:'Naibul fa\u2019il',ar:'نَائِب الْفَاعِل',g:'nahwu',k:[['نَائِب','pengganti, wakil'],['الْفَاعِل','pelaku']],
+ ket:'Objek yang naik menggantikan pelaku pada kalimat pasif, ikut jadi marfu\u2019.'},
+{t:'Maf\u2019ul bih',ar:'مَفْعُوْل بِهِ',g:'nahwu',k:[['مَفْعُوْل','yang dikerjakan'],['بِهِ','padanya']],
+ ket:'Sasaran perbuatan alias objek, dibaca manshub.'},
+{t:'Maf\u2019ul mutlak',ar:'مَفْعُوْل مُطْلَق',g:'nahwu',k:[['مَفْعُوْل','yang dikerjakan'],['مُطْلَق','lepas, tanpa ikatan']],
+ ket:'Mashdar dari fi\u2019ilnya sendiri, dipakai untuk menegaskan. Contoh: {ضَرَبْتُ ضَرْبًا}.'},
+{t:'Maf\u2019ul li ajlih',ar:'مَفْعُوْل لِأَجْلِهِ',g:'nahwu',k:[['مَفْعُوْل','yang dikerjakan'],['لِأَجْلِهِ','demi/karena itu']],
+ ket:'Keterangan sebab, menjawab pertanyaan \u201ckenapa\u201d.'},
+{t:'Maf\u2019ul fih',ar:'مَفْعُوْل فِيْهِ',g:'nahwu',k:[['مَفْعُوْل','yang dikerjakan'],['فِيْهِ','di dalamnya']],
+ ket:'Keterangan waktu atau tempat, nama lain dari dzharaf.'},
+{t:'Dzharaf',ar:'ظَرْف',g:'nahwu',k:[['ظَرْف','wadah, bejana']],
+ ket:'Keterangan waktu atau tempat \u2014 diibaratkan wadah yang menampung peristiwa.'},
+{t:'Hal',ar:'حَال',g:'nahwu',k:[['حَال','keadaan']],ket:'Menerangkan keadaan pelaku saat berbuat. Nakirah dan manshub.'},
+{t:'Tamyiz',ar:'تَمْيِيْز',g:'nahwu',k:[['تَمْيِيْز','pembedaan, penjelasan']],
+ ket:'Menjelaskan satuan atau ukuran yang masih samar, misalnya setelah bilangan.'},
+{t:'Munada',ar:'مُنَادَى',g:'nahwu',k:[['مُنَادَى','yang dipanggil']],ket:'Kata yang dipanggil dengan {يَا}.'},
+{t:'Na\u2019at',ar:'نَعْت',g:'nahwu',k:[['نَعْت','sifat, ciri']],ket:'Kata sifat yang mengikuti kata sebelumnya. Disebut juga shifat.'},
+{t:'Man\u2019ut',ar:'مَنْعُوْت',g:'nahwu',k:[['مَنْعُوْت','yang disifati']],ket:'Kata yang diberi sifat.'},
+{t:'Athaf',ar:'عَطْف',g:'nahwu',k:[['عَطْف','menyambung, membelokkan']],ket:'Penyambungan dua kata dengan huruf seperti {وَ} dan {ثُمَّ}.'},
+{t:'Taukid',ar:'تَوْكِيْد',g:'nahwu',k:[['تَوْكِيْد','penguatan, penegasan']],ket:'Kata penegas seperti {كُلُّهُمْ} dan {نَفْسُهُ}.'},
+{t:'Badal',ar:'بَدَل',g:'nahwu',k:[['بَدَل','pengganti']],ket:'Kata yang menjelaskan dan bisa menggantikan kata sebelumnya.'},
+{t:'Tawabi\u2019',ar:'تَوَابِع',g:'nahwu',k:[['تَوَابِع','yang mengikuti']],
+ ket:'Empat kata yang i\u2019rabnya menyalin kata sebelumnya: na\u2019at, athaf, taukid, badal.'},
+{t:'Idhafah',ar:'إِضَافَة',g:'nahwu',k:[['إِضَافَة','penyandaran, penambahan']],
+ ket:'Susunan dua isim yang menyatakan kepemilikan, seperti {بَابُ الْمَسْجِدِ}.'},
+{t:'Mudhaf',ar:'مُضَاف',g:'nahwu',k:[['مُضَاف','yang disandarkan']],ket:'Kata pertama dalam idhafah. Tidak boleh bertanwin dan tidak boleh pakai {الْ}.'},
+{t:'Mudhaf ilaih',ar:'مُضَاف إِلَيْهِ',g:'nahwu',k:[['مُضَاف','yang disandarkan'],['إِلَيْهِ','kepadanya']],
+ ket:'Kata kedua dalam idhafah, selalu majrur.'},
+{t:'Syibhul jumlah',ar:'شِبْه الْجُمْلَة',g:'nahwu',k:[['شِبْه','menyerupai'],['الْجُمْلَة','kalimat']],
+ ket:'Susunan jar-majrur atau dzharaf yang bisa menduduki jabatan seperti kalimat, misalnya jadi khabar.'},
+{t:'Mamnu\u2019 minash sharf',ar:'مَمْنُوْع مِنَ الصَّرْف',g:'nahwu',k:[['مَمْنُوْع','yang dilarang'],['مِنَ الصَّرْف','dari tanwin']],
+ ket:'Isim yang tidak boleh bertanwin, dan saat majrur tandanya fathah. Contoh: {عُمَرُ}، {أَحْمَدُ}.'},
+{t:'Marfu\u2019at, manshubat, majrurat',ar:'الْمَرْفُوْعَات',g:'nahwu',k:[['الْمَرْفُوْعَات','kata-kata yang di-rafa\u2019-kan']],
+ ket:'Nama kelompok: daftar jabatan yang selalu marfu\u2019, manshub, atau majrur.'},
+
+/* ---- sharaf ---- */
+{t:'Tsulatsi',ar:'ثُلَاثِيّ',g:'sharaf',k:[['ثُلَاثِيّ','yang berjumlah tiga']],ket:'Fi\u2019il yang huruf aslinya tiga. Dari kata {ثَلَاثَة} = tiga.'},
+{t:'Mujarrad',ar:'مُجَرَّد',g:'sharaf',k:[['مُجَرَّد','yang ditelanjangi, dimurnikan']],ket:'Bersih dari huruf tambahan.'},
+{t:'Tsulatsi mujarrad',ar:'ثُلَاثِيّ مُجَرَّد',g:'sharaf',k:[['ثُلَاثِيّ','berjumlah tiga'],['مُجَرَّد','tanpa tambahan']],
+ ket:'Fi\u2019il tiga huruf yang belum diberi huruf tambahan apa pun. Contoh: {نَصَرَ}، {كَتَبَ}. Jenis ini punya enam bab.'},
+{t:'Mazid',ar:'مَزِيْد',g:'sharaf',k:[['مَزِيْد','yang ditambah']],ket:'Sudah diberi huruf tambahan di luar tiga huruf aslinya.'},
+{t:'Tsulatsi mazid',ar:'ثُلَاثِيّ مَزِيْد',g:'sharaf',k:[['ثُلَاثِيّ','berjumlah tiga'],['مَزِيْد','yang ditambahi']],
+ ket:'Fi\u2019il tiga huruf yang diberi tambahan, sehingga maknanya bergeser. Contoh: {أَكْرَمَ}، {اِسْتَغْفَرَ}.'},
+{t:'Ruba\u2019i, khumasi, sudasi',ar:'رُبَاعِيّ خُمَاسِيّ سُدَاسِيّ',g:'sharaf',
+ k:[['رُبَاعِيّ','berjumlah empat'],['خُمَاسِيّ','berjumlah lima'],['سُدَاسِيّ','berjumlah enam']],
+ ket:'Penamaan menurut jumlah huruf setelah ditambah.'},
+{t:'Wazan',ar:'وَزْن',g:'sharaf',k:[['وَزْن','timbangan']],ket:'Pola pembanding yang memakai huruf {ف ع ل}, misalnya {مَفْعُوْلٌ}.'},
+{t:'Mauzun',ar:'مَوْزُوْن',g:'sharaf',k:[['مَوْزُوْن','yang ditimbang']],ket:'Kata asli yang sedang dibandingkan dengan wazan.'},
+{t:'Mizan sharfi',ar:'مِيْزَان صَرْفِيّ',g:'sharaf',k:[['مِيْزَان','alat timbang'],['صَرْفِيّ','menurut sharaf']],
+ ket:'Sistem penimbangan kata dalam ilmu sharaf.'},
+{t:'Tashrif',ar:'تَصْرِيْف',g:'sharaf',k:[['تَصْرِيْف','pengubahan, pemutaran']],ket:'Memutar satu kata menjadi berbagai bentuk.'},
+{t:'Tashrif istilahi',ar:'تَصْرِيْف اِصْطِلَاحِيّ',g:'sharaf',k:[['تَصْرِيْف','pengubahan'],['اِصْطِلَاحِيّ','menurut istilah']],
+ ket:'Perjalanan satu akar melewati sepuluh bentuk: madhi, mudhari\u2019, mashdar, dan seterusnya.'},
+{t:'Tashrif lughawi',ar:'تَصْرِيْف لُغَوِيّ',g:'sharaf',k:[['تَصْرِيْف','pengubahan'],['لُغَوِيّ','menurut bahasa']],
+ ket:'Memasangkan satu fi\u2019il dengan empat belas kata ganti.'},
+{t:'Fi\u2019il madhi',ar:'فِعْل مَاضٍ',g:'sharaf',k:[['فِعْل','kata kerja'],['مَاضٍ','yang telah lewat']],ket:'Menunjukkan pekerjaan yang sudah terjadi.'},
+{t:'Fi\u2019il mudhari\u2019',ar:'فِعْل مُضَارِع',g:'sharaf',k:[['فِعْل','kata kerja'],['مُضَارِع','yang menyerupai']],
+ ket:'Menunjukkan pekerjaan yang sedang atau akan terjadi. Disebut menyerupai karena polanya mirip isim fa\u2019il.'},
+{t:'Fi\u2019il amr',ar:'فِعْل أَمْر',g:'sharaf',k:[['فِعْل','kata kerja'],['أَمْر','perintah']],ket:'Kata kerja perintah, dibentuk dari fi\u2019il mudhari\u2019.'},
+{t:'Fi\u2019il nahi',ar:'فِعْل نَهْي',g:'sharaf',k:[['فِعْل','kata kerja'],['نَهْي','larangan']],ket:'Larangan, dibentuk dengan {لَا} + fi\u2019il mudhari\u2019 yang dijazmkan.'},
+{t:'Mashdar',ar:'مَصْدَر',g:'sharaf',k:[['مَصْدَر','sumber, tempat keluar']],
+ ket:'Kata benda yang menunjukkan perbuatan tanpa terikat waktu. Dianggap sumber lahirnya kata-kata lain.'},
+{t:'Isim fa\u2019il',ar:'اِسْم فَاعِل',g:'sharaf',k:[['اِسْم','nama'],['فَاعِل','yang melakukan']],ket:'Kata benda pelaku, seperti {كَاتِبٌ} = penulis.'},
+{t:'Isim maf\u2019ul',ar:'اِسْم مَفْعُوْل',g:'sharaf',k:[['اِسْم','nama'],['مَفْعُوْل','yang dikerjakan']],ket:'Kata benda sasaran, seperti {مَكْتُوْبٌ} = yang ditulis.'},
+{t:'Ma\u2019lum',ar:'مَعْلُوْم',g:'sharaf',k:[['مَعْلُوْم','yang diketahui']],ket:'Bentuk aktif \u2014 pelakunya disebut jelas.'},
+{t:'Majhul',ar:'مَجْهُوْل',g:'sharaf',k:[['مَجْهُوْل','yang tidak diketahui']],ket:'Bentuk pasif \u2014 pelakunya tidak disebut.'},
+{t:'Lazim & muta\u2019addi',ar:'لَازِم مُتَعَدٍّ',g:'sharaf',k:[['لَازِم','yang menetap'],['مُتَعَدٍّ','yang melampaui']],
+ ket:'Lazim tidak butuh objek, muta\u2019addi butuh objek karena perbuatannya melampaui pelaku.'},
+{t:'Shahih',ar:'صَحِيْح',g:'sharaf',k:[['صَحِيْح','sehat, utuh']],ket:'Akar kata yang bebas dari huruf illat, jadi perubahannya rapi.'},
+{t:'Mu\u2019tal',ar:'مُعْتَلّ',g:'sharaf',k:[['مُعْتَلّ','yang berpenyakit']],ket:'Akar kata yang mengandung {و ي ا}, sehingga bentuknya sering berubah.'},
+{t:'Huruf illat',ar:'حَرْف عِلَّة',g:'sharaf',k:[['حَرْف','huruf'],['عِلَّة','penyakit, sebab']],ket:'Tiga huruf lemah: {و ي ا}.'},
+{t:'Mitsal, ajwaf, naqish',ar:'مِثَال أَجْوَف نَاقِص',g:'sharaf',
+ k:[['مِثَال','contoh, serupa'],['أَجْوَف','yang berongga'],['نَاقِص','yang kurang']],
+ ket:'Tiga jenis mu\u2019tal menurut letak huruf illatnya: di depan, di tengah, atau di akhir.'},
+{t:'Sima\u2019i',ar:'سَمَاعِيّ',g:'sharaf',k:[['سَمَاعِيّ','menurut yang didengar']],ket:'Bentuk yang harus dihafal karena tidak berpola tetap, seperti mashdar tsulatsi.'},
+{t:'Qiyasi',ar:'قِيَاسِيّ',g:'sharaf',k:[['قِيَاسِيّ','menurut ukuran, berpola']],ket:'Bentuk yang bisa dihitung dengan rumus, seperti mashdar fi\u2019il mazid.'},
+{t:'Hamzah washal',ar:'هَمْزَة وَصْل',g:'sharaf',k:[['هَمْزَة','hamzah'],['وَصْل','penyambung']],
+ ket:'Hamzah di awal kata yang tidak dibaca kalau ada kata sebelumnya. Contoh: {وَاصْبِرْ} dibaca \u201cwashbir\u201d.'},
+{t:'Huruf halq',ar:'حُرُوْف الْحَلْق',g:'sharaf',k:[['حُرُوْف','huruf-huruf'],['الْحَلْق','tenggorokan']],
+ ket:'Enam huruf yang keluar dari tenggorokan: {ء ه ع ح غ خ}. Berpengaruh pada pemilihan bab fi\u2019il.'},
+{t:'Idgham',ar:'إِدْغَام',g:'sharaf',k:[['إِدْغَام','memasukkan, melebur']],
+ ket:'Peleburan dua huruf sejenis jadi satu bertasydid, misalnya {اِصْتَبَرَ} menjadi {اِصْطَبَرَ}.'}
+];
+
+/* ============================================================
    RENDER HELPERS
    ============================================================ */
 function renderWords(ws,extra,tanpaHarakat){
@@ -1780,15 +2102,32 @@ const ARNUM=n=>String(n).split('').map(d=>'٠١٢٣٤٥٦٧٨٩'[+d]).join('');
 /* ============================================================
    STATE + ROUTER
    ============================================================ */
-const state={tab:'home',nahwu:0,sharaf:0,bacaan:0,hiwar:0,hide:null,reveal:{},kaidah:'all',qdrill:{},gloss:true,done:{},quiz:{},drill:{},hdrill:{},bab:'1',root:['ن','ص','ر'],q:'',theme:'',arf:1,last:null,optin:'belum',buka:false,alasan:'bab',gundul:false,cek:{},src:'',viral:false,kunjungan:0,hari:'',form:{nama:'',wa:'',email:'',setuju:false},kontak:null,galat:''};
-const TABS=[['home','Beranda'],['nahwu','Nahwu'],['sharaf','Sharaf'],['bacaan','Bacaan'],['hiwar','Percakapan'],['ayat','Ayat'],['tashrif','Tashrif'],['quiz','Latihan']];
+const state={tab:'home',nahwu:0,sharaf:0,bacaan:0,hiwar:0,hide:null,reveal:{},kaidah:'all',qdrill:{},gloss:true,done:{},quiz:{},drill:{},hdrill:{},bab:'1',root:['ن','ص','ر'],q:'',theme:'',arf:1,last:null,optin:'belum',buka:false,alasan:'bab',gundul:false,cek:{},rujuk:false,rujukAkar:false,grup:'all',sorot:'',src:'',viral:false,kunjungan:0,hari:'',form:{nama:'',wa:'',email:'',setuju:false},kontak:null,galat:''};
+const TABS=[['home','Beranda'],['nahwu','Nahwu'],['sharaf','Sharaf'],['bacaan','Bacaan'],['hiwar','Percakapan'],['ayat','Ayat'],['tashrif','Tashrif'],['quiz','Latihan'],['istilah','Istilah']];
 const view=document.getElementById('view');
 
 function go(tab){ state.tab=tab; render(); window.scrollTo({top:0,behavior:'smooth'}); }
 
 function renderTabs(){
-  document.getElementById('tabs').innerHTML=TABS.map(([k,l])=>
+  const n=document.getElementById('tabs');
+  n.innerHTML=TABS.map(([k,l])=>
     '<button data-tab="'+k+'" aria-current="'+(state.tab===k)+'">'+l+'</button>').join('');
+  pusatkanTab(); cekGeser();
+}
+/* geser menu sendiri supaya tab yang aktif selalu kelihatan */
+function pusatkanTab(){
+  const n=document.getElementById('tabs'); if(!n) return;
+  const a=n.querySelector('[aria-current="true"]'); if(!a) return;
+  const kiri=a.offsetLeft, kanan=kiri+a.offsetWidth;
+  if(kiri<n.scrollLeft||kanan>n.scrollLeft+n.clientWidth)
+    n.scrollLeft=kiri-(n.clientWidth-a.offsetWidth)/2;
+}
+/* tampilkan panah & bayangan hanya di sisi yang memang masih ada menunya */
+function cekGeser(){
+  const w=document.getElementById('tabwrap'), n=document.getElementById('tabs');
+  if(!w||!n) return;
+  w.classList.toggle('ada-kiri', n.scrollLeft>4);
+  w.classList.toggle('ada-kanan', n.scrollLeft+n.clientWidth < n.scrollWidth-4);
 }
 function updateProgress(){
   const total=NAHWU.length+SHARAF.length;
@@ -1799,56 +2138,72 @@ function updateProgress(){
 
 /* ---------- HOME ---------- */
 function viewHome(){
-  const hero=[['كَتَبَ','menulis','fi',''],['الطَّالِبُ','siswa itu','rafa','fa\u2019il'],['الدَّرْسَ','pelajaran','nashab','maf\u2019ul bih'],['فِي','di','hf',''],['الْفَصْلِ','kelas','jar','majrur']];
+  const total=NAHWU.length+SHARAF.length, selesai=babDipahami();
+
   let sambung='';
   if(state.last){
     const daftar=state.last.k==='nahwu'?NAHWU:SHARAF;
     const bab=daftar[state.last.i];
     if(bab) sambung='<div class="resume"><div>'+
       '<div class="lbl">Lanjutkan dari terakhir</div>'+
-      '<div class="ttl">'+(state.last.k==='nahwu'?'Nahwu':'Sharaf')+' · Bab '+(state.last.i+1)+' — '+esc(bab.title)+'</div></div>'+
+      '<div class="ttl">'+(state.last.k==='nahwu'?'Nahwu':'Sharaf')+' \u00b7 Bab '+(state.last.i+1)+' \u2014 '+esc(bab.title)+'</div></div>'+
       '<button class="btn solid" data-les="'+state.last.k+':'+state.last.i+'">Buka bab ini</button></div>';
   }
-  return sambung+'<section class="hero fade">'+
-   '<div class="hero-grid">'+
+
+  let capaian='';
+  if(selesai>0){
+    const persen=Math.round(selesai/total*100);
+    capaian='<div class="capaian"><span>'+selesai+' dari '+total+' bab sudah kamu pahami</span>'+
+      '<span class="garis"><i style="width:'+persen+'%"></i></span></div>';
+  }
+
+  const motivasi=[
+    ['Tidak perlu bekal apa-apa','Asal sudah bisa membaca huruf Arab, itu cukup. Bab pertama dimulai dari yang paling dasar, dan tiap istilah dijelaskan begitu pertama kali muncul.'],
+    ['Boleh pelan, asal jangan berhenti','Satu bab sehari sudah lebih dari cukup. Yang membuat orang gagal biasanya bukan lambat, melainkan berhenti lalu tidak kembali lagi.'],
+    ['Semuanya terbuka','Tidak ada bagian yang dikunci. Kemajuanmu tersimpan sendiri di perangkat ini, jadi boleh ditutup kapan saja dan dilanjutkan nanti.']
+  ];
+
+  const menu=[
+    ['nahwu','النَّحْو','Nahwu',NAHWU.length+' bab \u00b7 aturan menyusun kalimat'],
+    ['sharaf','الصَّرْف','Sharaf',SHARAF.length+' bab \u00b7 perubahan bentuk kata'],
+    ['bacaan','الْقِرَاءَة','Bacaan',BACAAN.length+' teks pendek berharakat'],
+    ['hiwar','الْحِوَار','Percakapan',HIWAR.length+' dialog sehari-hari'],
+    ['ayat','الْآيَات','Ayat',AYAT.length+' ayat dibedah kata per kata'],
+    ['tashrif','التَّصْرِيف','Tashrif','Alat bantu perubahan kata'],
+    ['quiz','التَّدْرِيبَات','Latihan',QUIZ.length+' soal berpenjelasan'],
+    ['istilah','الْمُصْطَلَحَات','Istilah',ISTILAH.length+' istilah beserta arti harfiahnya']
+  ];
+
+  return sambung+
+   '<section class="hero fade"><div class="hero-grid">'+
     '<div>'+
-     '<p class="eyebrow">Nahwu · Sharaf · Bahasa Indonesia</p>'+
-     '<h2>Bahasa Arab itu <em>berpola</em>. Polanya bisa dipelajari.</h2>'+
-     '<p class="lede">Nahwu mengatur susunan kalimat. Sharaf mengatur bentuk kata. Dua-duanya dijelaskan di sini pakai bahasa sehari-hari, dengan contoh yang banyak — tiap kata diberi arti dan ditandai tugasnya dalam kalimat.</p>'+
-     '<button class="btn solid" data-go="nahwu">Mulai dari bab pertama</button> '+
-     '<button class="btn ghost" data-go="tashrif">Coba tashrif otomatis</button>'+
+     capaian+
+     '<p class="eyebrow">'+(selesai>0?'Selamat datang kembali':'Selamat datang')+'</p>'+
+     '<h2>Yang penting bukan <em>cepat</em>, tapi tidak berhenti.</h2>'+
+     '<p class="lede">Belajar bahasa Arab itu menumpuk sedikit demi sedikit. Buka satu bab hari ini, ulangi besok, dan lama-lama kalimat yang dulu terasa gelap mulai terbaca sendiri.</p>'+
+     '<button class="btn solid" data-les="nahwu:'+(state.last&&state.last.k==='nahwu'?state.last.i:0)+'">'+
+       (selesai>0?'Lanjutkan belajar':'Mulai dari bab pertama')+'</button> '+
+     '<button class="btn ghost" data-go="bacaan">Lihat bacaannya dulu</button>'+
     '</div>'+
-    '<div>'+renderWords(hero)+
-     '<p class="ex-trans"><b>Arti:</b> Siswa itu menulis pelajaran di kelas.</p>'+
-     '<div class="legend">'+
-      '<span><i style="background:var(--c-rafa)"></i>marfu\u2019</span>'+
-      '<span><i style="background:var(--c-nashab)"></i>manshub</span>'+
-      '<span><i style="background:var(--c-jar)"></i>majrur</span>'+
-      '<span><i style="background:var(--c-fi)"></i>fi\u2019il</span>'+
-      '<span><i style="background:var(--c-hf)"></i>harf</span>'+
-     '</div>'+
+    '<div class="kutipan">'+
+     '<div class="ar">مَنْ جَدَّ وَجَدَ</div>'+
+     '<div class="id">\u201cSiapa yang bersungguh-sungguh, ia akan mendapatkan.\u201d</div>'+
+     '<div class="sum">Peribahasa Arab</div>'+
     '</div>'+
    '</div></section>'+
 
-   '<div class="section-head"><h3>Urutan belajar yang disarankan</h3>'+
-   '<p>Jangan lompat — bab berikutnya selalu memakai istilah dari bab sebelumnya.</p></div>'+
-   '<div class="grid-cards">'+
-    '<button class="card" data-go="nahwu"><div class="ar">النَّحْو</div><h5>1 · Nahwu</h5><p>'+NAHWU.length+' bab. Mulai dari mengenali isim, fi\u2019il, harf sampai membaca kalimat berharakat.</p></button>'+
-    '<button class="card" data-go="sharaf"><div class="ar">الصَّرْف</div><h5>2 · Sharaf</h5><p>'+SHARAF.length+' bab. Wazan, tashrif, dan cara satu akar kata melahirkan puluhan kata baru.</p></button>'+
-    '<button class="card" data-go="bacaan"><div class="ar">الْقِرَاءَة</div><h5>3 · Bacaan</h5><p>'+BACAAN.length+' teks berharakat, dibedah kalimat per kalimat. Harakatnya bisa dilepas untuk latihan baca gundul.</p></button>'+
-    '<button class="card" data-go="hiwar"><div class="ar">الْحِوَار</div><h5>4 · Percakapan</h5><p>'+HIWAR.length+' dialog sehari-hari, lengkap dengan mode latihan peran untuk menyusun kalimat sendiri.</p></button>'+
-    '<button class="card" data-go="ayat"><div class="ar">الْآيَات</div><h5>5 · Ayat Al-Qur’an</h5><p>'+AYAT.length+' ayat pendek dibedah kata per kata, bisa disaring menurut kaidah yang sedang dipelajari.</p></button>'+
-    '<button class="card" data-go="tashrif"><div class="ar">التَّصْرِيف</div><h5>6 · Tashrif otomatis</h5><p>Masukkan tiga huruf apa pun, lihat 14 dhamir dan delapan wazan tambahan langsung terbentuk.</p></button>'+
-    '<button class="card" data-go="quiz"><div class="ar">التَّدْرِيبَات</div><h5>7 · Latihan</h5><p>'+QUIZ.length+' soal pilihan ganda. Setiap jawaban disertai penjelasan singkat.</p></button>'+
-   '</div>'+
+   '<div class="section-head"><h3>Sebelum mulai, tiga hal ini dulu</h3></div>'+
+   '<div class="motivasi">'+motivasi.map(m=>
+     '<div class="sel"><h5>'+esc(m[0])+'</h5><p>'+esc(m[1])+'</p></div>').join('')+'</div>'+
 
-   '<div class="section-head"><h3>Cara membaca contoh di aplikasi ini</h3>'+
-   '<p>Setiap contoh ditulis seperti santri memaknai kitab: arti di bawah tiap kata, garis warna menunjukkan keadaan i\u2019rabnya.</p></div>'+
-   '<div class="ex-block">'+renderWords([['ذَهَبَ','pergi','fi',''],['مُحَمَّدٌ','Muhammad','rafa','fa\u2019il'],['إِلَى','ke','hf',''],['الْمَسْجِدِ','masjid','jar','majrur']])+
-   '<p class="ex-trans"><b>Arti:</b> Muhammad pergi ke masjid.</p>'+
-   '<p class="ex-note">Hijau = marfu\u2019 (biasanya pelaku). Merah = manshub (biasanya sasaran). Biru = majrur (setelah huruf jar atau jadi mudhaf ilaih).</p></div>'+
+   '<div class="section-head" style="margin-top:38px"><h3>Mau mulai dari mana?</h3>'+
+   '<p>Kalau baru pertama kali, mulai saja dari Nahwu bab satu. Sisanya bisa dijelajahi bebas.</p></div>'+
+   '<div class="grid-cards">'+menu.map(m=>
+     '<button class="card" data-go="'+m[0]+'"><div class="ar">'+m[1]+'</div>'+
+     '<h5>'+esc(m[2])+'</h5><p>'+esc(m[3])+'</p></button>').join('')+'</div>'+
+
    (state.optin==='kirim'?'':
-     '<div class="tawaran"><p><b>Mau dikabari kalau ada materi baru?</b><br>Isi sebentar, kabarnya dikirim ke kamu.</p>'+
+     '<div class="tawaran"><p><b>Mau dikabari kalau ada materi baru atau info menarik lainnya?</b><br>Isi sebentar, kabarnya nanti dikirim ke kamu.</p>'+
      '<button class="btn" data-optin="buka">Mau dikabari</button></div>')+
    kartuBagikan();
 }
@@ -1863,7 +2218,7 @@ function viewLessons(kind){
       '<span class="n">'+ARNUM(i+1)+'</span><span>'+esc(l.title)+'</span>'+
       (state.done[l.id]?'<span class="done">✓</span>':'')+'</button></li>').join('')+'</ol></div>';
 
-  const art='<article class="fade"><div class="lesson-head">'+
+  const art='<article class="fade" id="lessonArt"><div class="lesson-head">'+
     '<div class="kicker">'+(kind==='nahwu'?'Nahwu':'Sharaf')+' · Bab '+(idx+1)+' dari '+list.length+'</div>'+
     '<h2>'+esc(les.title)+'</h2><div class="ar">'+les.ar+'</div></div>'+
     les.body.map(renderBlock).join('')+
@@ -1941,7 +2296,81 @@ function viewTashrif(){
    MAZID.map(z=>'<tr><td class="arc">'+z.w+'</td><td class="arc">'+M(z.w)+'</td><td class="arc">'+M(z.m)+'</td><td class="arc">'+M(z.ms)+'</td><td class="arc">'+M(z.f)+'</td><td class="arc">'+M(z.am)+'</td><td>'+z.ket+'</td></tr>').join('')+
    '</tbody></table></div>';
 
-  h+='<div class="tip"><div class="h">Catatan</div><p>Hasil di atas dihitung dengan rumus, jadi sempurna untuk fi\u2019il shahih seperti {ن ص ر} atau {ك ت ب}. Untuk akar bermuatan {و ي ا} — misalnya {ق و ل} atau {ر م ي} — bentuk aslinya mengalami perubahan bunyi yang dibahas di bab <b>Fi\u2019il Shahih &amp; Mu\u2019tal</b>.</p></div></section>';
+  h+='<div class="tip"><div class="h">Catatan</div><p>Hasil di atas dihitung dengan rumus, jadi sempurna untuk fi\u2019il shahih seperti {ن ص ر} atau {ك ت ب}. Untuk akar bermuatan {و ي ا} — misalnya {ق و ل} atau {ر م ي} — bentuk aslinya mengalami perubahan bunyi yang dibahas di bab <b>Fi\u2019il Shahih &amp; Mu\u2019tal</b>.</p></div>';
+
+  h+=tabelRujukan(r,ok);
+  return h+'</section>';
+}
+
+/* ---------- KAMUS ISTILAH ---------- */
+function viewIstilah(){
+  const g=state.grup;
+  const daftar=ISTILAH.map((x,i)=>({x:x,i:i})).filter(o=>g==='all'||o.x.g===g)
+    .sort((a,b)=>a.x.t.localeCompare(b.x.t,'id',{sensitivity:'base'}));
+
+  let h='<section class="fade"><div class="section-head"><h3>Kamus istilah</h3>'+
+   '<p>Istilah nahwu dan sharaf hampir semuanya kata Arab biasa. Begitu arti harfiahnya diketahui, '+
+   'namanya jadi masuk akal dan lebih mudah diingat daripada dihafal mentah-mentah.</p></div>';
+
+  h+='<div class="filterbar">'+GRUP.map(k=>{
+    const n=(k[0]==='all')?ISTILAH.length:ISTILAH.filter(x=>x.g===k[0]).length;
+    return '<button class="fchip" data-grup="'+k[0]+'" aria-current="'+(g===k[0])+'">'+
+      esc(k[1])+' <span style="opacity:.55">'+n+'</span></button>';
+  }).join('')+'</div>';
+
+  let hurufTerakhir='';
+  h+='<div class="istilah">'+daftar.map(o=>{
+    const x=o.x, id='ist-'+o.i;
+    let kepala='';
+    const hr=x.t.charAt(0).toUpperCase();
+    if(hr!==hurufTerakhir){ hurufTerakhir=hr; kepala='<div class="huruf">'+esc(hr)+'</div>'; }
+    return kepala+
+      '<div class="ist'+(state.sorot===id?' disorot':'')+'" id="'+id+'">'+
+      '<h5>'+esc(x.t)+'</h5><div class="arj">'+x.ar+'</div>'+
+      '<div class="harfiah">Arti tiap katanya</div>'+
+      x.k.map(w=>'<div class="kk"><span class="aa">'+w[0]+'</span><span class="mm">'+esc(w[1])+'</span></div>').join('')+
+      '<p class="ket">'+rich(x.ket)+'</p></div>';
+  }).join('')+'</div>';
+
+  return h+'</section>';
+}
+
+/* ---------- TABEL RUJUKAN TASHRIF ---------- */
+function kartuRujuk(d,pakaiAkar,r,label){
+  const isi=pakaiAkar
+    ? d.tpl.map((t,i)=> t==='—' ? '—' : (label[i]==='Nahi' ? 'لَا ' + mold(t,r) : mold(t,r)))
+    : d.con;
+  return '<div class="kt"><div class="kp">'+
+    '<span class="no">'+esc(d.no)+'</span>'+
+    '<span class="wz">'+d.wazan+'</span>'+
+    '<span class="ar-ti">'+(pakaiAkar?'akar '+esc(r.join(' ')):'contoh '+esc(d.akar)+' \u2014 '+esc(d.arti))+'</span>'+
+   '</div>'+
+   label.map((nm,i)=>{
+     const v=isi[i]||'—', kosong=(v==='—');
+     return '<div class="br"><span class="nm">'+esc(nm)+'</span>'+
+       '<span class="hs'+(kosong?' kosong':'')+'">'+(kosong?'tidak dipakai':v)+'</span></div>';
+   }).join('')+'</div>';
+}
+function tabelRujukan(r,akarSiap){
+  let h='<div class="subhead" style="margin-top:34px">Tabel rujukan lengkap</div>'+
+    '<p style="color:var(--ink-soft);font-size:14.5px;margin-bottom:12px">'+
+    'Seluruh wazan berjejer dalam satu halaman, seperti poster tashrif yang ditempel di kelas. '+
+    'Berguna untuk dilihat berulang sampai iramanya hafal.</p>'+
+    '<button class="btn '+(state.rujuk?'on':'')+'" data-rujuk="1">'+
+      (state.rujuk?'\u2713 Tabel rujukan terbuka':'Buka tabel rujukan')+'</button>';
+  if(!state.rujuk) return h;
+
+  h+='<div class="modebar" style="margin-top:14px">'+
+     '<button class="btn '+(state.rujukAkar?'ghost':'on')+'" data-rujukakar="0">Contoh baku</button>'+
+     '<button class="btn '+(state.rujukAkar?'on':'ghost')+'" data-rujukakar="1"'+(akarSiap?'':' disabled')+'>'+
+       'Pakai akar '+(akarSiap?esc(r.join(' ')):'sendiri')+'</button></div>';
+
+  const pakai=state.rujukAkar&&akarSiap;
+  h+='<div class="subhead" style="font-size:18px;margin-top:22px">Tsulatsi mujarrad \u2014 enam bab</div>'+
+     '<div class="rujuk">'+RUJUK_MUJARRAD.map(d=>kartuRujuk(d,pakai,r,BENTUK9)).join('')+'</div>';
+  h+='<div class="subhead" style="font-size:18px;margin-top:28px">Tsulatsi mazid \u2014 sembilan wazan</div>'+
+     '<div class="rujuk">'+RUJUK_MAZID.map(d=>kartuRujuk(d,pakai,r,BENTUK8)).join('')+'</div>';
+  h+='<div class="tip"><div class="h">Catatan</div><p>Bentuk <b>isim zaman, makan, dan alat</b> pada fi\u2019il tiga huruf sering hanya berupa pola \u2014 tidak semuanya benar-benar dipakai orang Arab. Yang paling sering muncul dalam pemakaian nyata adalah lima bentuk pertama.</p></div>';
   return h;
 }
 
@@ -2123,8 +2552,9 @@ function viewAyat(){
   h+='<p style="color:var(--ink-soft);font-size:14px;margin:14px 0 0">Menampilkan '+list.length+' ayat'+
      (f==='all'?'':' untuk kaidah '+esc(nama(f)))+'.</p>';
 
-  h+=list.map(a=>{const teks=a.w.map(x=>x[0]).join(' ');
-     return '<div class="ayat"><div class="ayat-ref">'+esc(a.ref)+'</div>'+
+  h+=list.map(a=>{const teks=a.w.map(x=>x[0]).join(' '), id='ay-'+AYAT.indexOf(a);
+     return '<div class="ayat'+(state.sorot===id?' disorot':'')+'" id="'+id+'">'+
+     '<div class="ayat-ref">'+esc(a.ref)+'</div>'+
      '<div class="ayat-full">'+(polos(a.id)?gundul(teks):teks)+'</div>'+
      renderWords(a.w,state.gloss?'':'nogloss',polos(a.id))+
      tombolCek(a.id)+
@@ -2181,6 +2611,8 @@ HIWAR.forEach((b,i)=>INDEX.push({kind:'Percakapan',sub:b.level,title:b.title,ar:
   jump:'hiwar:'+i,teks:bersih(b.title+' '+b.ar+' '+b.intro+' '+b.lines.map(isiBlok).join(' ')+' '+b.ungkapan.map(k=>k.join(' ')).join(' '))}));
 AYAT.forEach((a,i)=>INDEX.push({kind:'Ayat',sub:'Al-Qur\u2019an',title:a.ref,ar:a.w.map(x=>x[0]).join(' '),
   jump:'ayat:'+i,teks:bersih(a.ref+' '+a.tr+' '+(a.note||'')+' '+isiBlok(a))}));
+ISTILAH.forEach((x,i)=>INDEX.push({kind:'Istilah',sub:'Kamus',title:x.t,ar:x.ar,
+  jump:'istilah:'+i,teks:bersih(x.t+' '+x.ar+' '+x.k.map(w=>w[0]+' '+w[1]).join(' ')+' '+x.ket)}));
 INDEX.push({kind:'Alat',sub:'Tashrif',title:'Tashrif otomatis',ar:'\u0627\u0644\u062a\u064e\u0651\u0635\u0652\u0631\u0650\u064a\u0641',jump:'tashrif:0',
   teks:'tashrif wazan mauzun lughawi istilahi mujarrad mazid dhamir madhi mudhari amr mashdar isim fail maful bab'});
 
@@ -2261,7 +2693,7 @@ function tautanWA(){
   return 'https://wa.me/?text='+encodeURIComponent(PESAN_BAGIKAN+'\n\n'+tautanBagikan());
 }
 function tombolBagikan(gaya){
-  return '<a class="btn '+(gaya||'ghost')+'" href="'+tautanWA()+'" target="_blank" rel="noopener">Bagikan ke grup WA</a>';
+  return '<a class="btn '+(gaya||'ghost')+'" href="'+tautanWA()+'" target="_blank" rel="noopener">Bagikan via WA</a>';
 }
 function kartuBagikan(teks){
   return '<div class="bagikan"><p><b>Ada teman yang lagi belajar bahasa Arab?</b><br>'+
@@ -2304,7 +2736,7 @@ const JUDUL_TAWARAN={
   bab:     ['Satu bab selesai','Mau dikabari kalau ada bab baru?'],
   bacaan:  ['Latihan bacaan tuntas','Mau dikabari kalau ada bacaan baru?'],
   latihan: ['Jawabanmu banyak yang benar','Mau dikabari kalau ada latihan baru?'],
-  kembali: ['Senang kamu kembali','Mau dikabari kalau ada materi baru?'],
+  kembali: ['Senang kamu kembali','Mau dikabari kalau ada materi baru atau info menarik lainnya?'],
   kuat:    ['Belajarmu sudah jauh','Sekalian minta dikabari materi barunya?']
 };
 function periksaForm(){
@@ -2389,7 +2821,7 @@ function simpan(){
   simpanTimer=setTimeout(()=>{ store.set('nahwu_app',{
     done:state.done,tab:state.tab,nahwu:state.nahwu,sharaf:state.sharaf,bacaan:state.bacaan,
     hiwar:state.hiwar,quiz:state.quiz,drill:state.drill,hdrill:state.hdrill,qdrill:state.qdrill,
-    gloss:state.gloss,gundul:state.gundul,kaidah:state.kaidah,theme:state.theme,arf:state.arf,bab:state.bab,
+    gloss:state.gloss,gundul:state.gundul,kaidah:state.kaidah,grup:state.grup,theme:state.theme,arf:state.arf,bab:state.bab,
     root:state.root,last:state.last,optin:state.optin,kontak:state.kontak,
     src:state.src,viral:state.viral,kunjungan:state.kunjungan,hari:state.hari
   }); },700);
@@ -2402,6 +2834,7 @@ function render(){
   else if(state.tab==='bacaan') view.innerHTML=viewBacaan();
   else if(state.tab==='hiwar') view.innerHTML=viewHiwar();
   else if(state.tab==='ayat') view.innerHTML=viewAyat();
+  else if(state.tab==='istilah') view.innerHTML=viewIstilah();
   else if(state.tab==='tashrif') view.innerHTML=viewTashrif();
   else view.innerHTML=viewQuiz();
 }
@@ -2409,14 +2842,18 @@ function render(){
 /* ---------- EVENTS ---------- */
 document.addEventListener('click',async e=>{
   const t=e.target.closest('button'); if(!t) return;
-  if(t.dataset.tab){ bersihkanCari(); go(t.dataset.tab); return; }
+  if(t.dataset.tab){ bersihkanCari(); state.sorot=''; go(t.dataset.tab); return; }
   if(t.dataset.go){ bersihkanCari(); go(t.dataset.go); return; }
   if(t.dataset.les){
     const [k,i]=t.dataset.les.split(':'); const n=+i;
     const list=k==='nahwu'?NAHWU:SHARAF;
     if(n<0||n>=list.length) return;
     state.tab=k; state[k]=n; state.last={k:k,i:n}; bersihkanCari();
-    render(); window.scrollTo({top:0,behavior:'smooth'}); return;
+    render();
+    const elArt=document.getElementById('lessonArt');
+    if(elArt) elArt.scrollIntoView({behavior:'smooth',block:'start'});
+    else window.scrollTo({top:0,behavior:'smooth'});
+    return;
   }
   if(t.dataset.done){
     const id=t.dataset.done;
@@ -2443,11 +2880,15 @@ document.addEventListener('click',async e=>{
   if(t.dataset.jump){
     const [k,i]=t.dataset.jump.split(':'); const n=+i;
     bersihkanCari();
-    state.tab=k;
+    state.tab=k; state.sorot='';
     if(k==='nahwu'||k==='sharaf'){ state[k]=n; state.last={k:k,i:n}; }
     else if(k==='bacaan') state.bacaan=n;
     else if(k==='hiwar'){ state.hiwar=n; state.reveal={}; }
-    render(); window.scrollTo({top:0,behavior:'smooth'}); return;
+    else if(k==='istilah'){ state.grup='all'; state.sorot='ist-'+n; }
+    else if(k==='ayat'){ state.kaidah='all'; state.sorot='ay-'+n; }
+    render();
+    if(state.sorot) keSorotan(); else window.scrollTo({top:0,behavior:'smooth'});
+    return;
   }
   if(t.dataset.reset){ state.quiz={}; render(); window.scrollTo({top:0,behavior:'smooth'}); return; }
   if(t.dataset.bac){
@@ -2457,12 +2898,15 @@ document.addEventListener('click',async e=>{
   }
   if(t.dataset.gloss){ state.gloss=!state.gloss; render(); return; }
   if(t.dataset.gundul){ state.gundul=!state.gundul; state.cek={}; render(); return; }
+  if(t.dataset.rujuk){ state.rujuk=!state.rujuk; render(); return; }
+  if(t.dataset.rujukakar){ state.rujukAkar=t.dataset.rujukakar==='1'; render(); return; }
   if(t.dataset.cek){
     const k=t.dataset.cek;
     if(state.cek[k]) delete state.cek[k]; else state.cek[k]=true;
     render(); return;
   }
-  if(t.dataset.kaidah){ state.kaidah=t.dataset.kaidah; render(); return; }
+  if(t.dataset.kaidah){ state.kaidah=t.dataset.kaidah; state.sorot=''; render(); return; }
+  if(t.dataset.grup){ state.grup=t.dataset.grup; state.sorot=''; render(); return; }
   if(t.dataset.qdrill){
     const [di,oi]=t.dataset.qdrill.split(':').map(Number);
     if(state.qdrill[di]) return;
@@ -2530,6 +2974,13 @@ function bersihkanCari(){
   const box=document.getElementById('sbox');
   if(box) box.classList.remove('has');
 }
+function keSorotan(){
+  setTimeout(()=>{
+    const el=document.getElementById(state.sorot);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+    else window.scrollTo({top:0,behavior:'smooth'});
+  },70);
+}
 function keSoalBerikutnya(i){
   const semua=[...document.querySelectorAll('.q')];
   const sisa=semua.slice(i+1).find(el=>!el.querySelector('.explain'));
@@ -2572,6 +3023,11 @@ window.addEventListener('scroll',()=>{
   const b=document.getElementById('totop');
   if(b) b.classList.toggle('on',window.scrollY>620);
 },{passive:true});
+window.addEventListener('resize',cekGeser,{passive:true});
+document.addEventListener('DOMContentLoaded',()=>{
+  const n=document.getElementById('tabs');
+  if(n) n.addEventListener('scroll',cekGeser,{passive:true});
+});
 
 (async function init(){
   let d=await store.get('nahwu_app');
@@ -2584,6 +3040,7 @@ window.addEventListener('scroll',()=>{
     if(typeof d.arf==='number') state.arf=d.arf;
     if(typeof d.theme==='string') state.theme=d.theme;
     if(typeof d.kaidah==='string') state.kaidah=d.kaidah;
+    if(typeof d.grup==='string') state.grup=d.grup;
     if(typeof d.bab==='string') state.bab=d.bab;
     if(Array.isArray(d.root)&&d.root.length===3) state.root=d.root;
     if(d.last&&typeof d.last==='object') state.last=d.last;
